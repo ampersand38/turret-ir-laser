@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project name="TIL">
+    <Package name="Main">
+        <Key ID="STR_TIL_Main_TurretIRLaser">
+            <English>Turret IR Laser</English>
+        </Key>
+        <Key ID="STR_TIL_Main_TurretIRLaserToggle">
+            <English>Turret IR Laser (Toggle)</English>
+        </Key>
+        <Key ID="STR_TIL_Main_TurretIRLaserToggle_Tip">
+            <English>Toggles holding the current weapon for blind firing.</English>
+        </Key>
+    </Package>
+</Project>
