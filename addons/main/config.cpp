@@ -8,8 +8,8 @@ class CfgPatches {
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
         requiredAddons[] = {"cba_main"};
-        author = "";
-        authors[] = {""};
+        author = "Ampersand";
+        authors[] = {"Ampersand"};
         VERSION_CONFIG;
     };
 };
@@ -17,7 +17,5 @@ class CfgPatches {
 #include "CfgDefaultKeysPresets.hpp"
 #include "CfgEventHandlers.hpp"
 #include "CfgUserActions.hpp"
-#include "CfgVehicles.hpp"
-#include "CfgWeapons.hpp"
 #include "UserActionGroups.hpp"
-//#include "UserActionsConflictGroups.hpp"
+#include "UserActionsConflictGroups.hpp"

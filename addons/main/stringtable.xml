@@ -7,8 +7,8 @@
         <Key ID="STR_TIL_Main_TurretIRLaserToggle">
             <English>Turret IR Laser (Toggle)</English>
         </Key>
-        <Key ID="STR_TIL_Main_TurretIRLaserToggle_Tip">
-            <English>Toggles holding the current weapon for blind firing.</English>
+        <Key ID="STR_TIL_Main_TurretIRLaserToggle_ToolTip">
+            <English>Toggles the IR laser pointer for the current turret.</English>
         </Key>
     </Package>
 </Project>
