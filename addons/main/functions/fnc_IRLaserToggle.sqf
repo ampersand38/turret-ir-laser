@@ -22,17 +22,25 @@ if (_vehicleTurretID in GVAR(activeLasers)) exitWith {
     GVAR(activeLasers) deleteAt _vehicleTurretID;
 };
 
+private _laserInfo = [_vehicle];
+
+if (_turret isEqualTo [-1]) exitWith { // Pilot
+    getPilotCameraTarget _vehicle params ["_pilotCamTracking", "_pilotCamTargetPos", "_pilotCamTarget"];
+    private _gunBeg = getText (configOf _vehicle >> "memoryPointDriverOptics");
+    private _gunEnd = "";
+    _laserInfo = _laserInfo + [_gunBeg, _gunEnd];
+    GVAR(activeLasers) set [_vehicleTurretID, _laserInfo];
+};
+
 private _turretConfig = [_vehicle, _turret] call CBA_fnc_getTurret;
 private _pov = getText (_turretConfig >> "memoryPointGunnerOptics");
 
-private _laserInfo = [_vehicle];
-
 if (_pov == "pip0_pos") then {
-    _laserInfo = _laserInfo + ["pip0_dir", _pov];
+    _laserInfo = _laserInfo + [_pov, "pip0_dir"];
 } else {
     private _gunBeg = getText (_turretConfig >> "gunBeg");
     private _gunEnd = getText (_turretConfig >> "gunEnd");
-    _laserInfo = _laserInfo + [_gunBeg, _gunEnd];
+    _laserInfo = _laserInfo + [_gunEnd, _gunBeg];
 };
 
 //GVAR(activeLasers) set [_vehicleTurretID, [_vehicle, _selectionBeg, _selectionEnd]];

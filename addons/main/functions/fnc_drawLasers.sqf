@@ -15,11 +15,28 @@
 
 {
     _y params ["_vehicle", "_selectionBeg", "_selectionEnd"];
+
     if (!alive _vehicle) then {GVAR(activeLasers) deleteAt _x; continue;};
 
-    private _posBeg = _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg);
-    private _posEnd = _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionEnd);
-    private _lasDir = _posBeg vectorDiff _posEnd;
+    //private _posBeg = _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg);
+    private _posBeg = (velocity _vehicle vectorMultiply diag_deltaTime) vectorAdd (_vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg));
+    private _posEnd = if (_selectionEnd == "") then {
+        // Pilot camera
+        getPilotCameraTarget _vehicle params ["_pilotCamTracking", "_pilotCamTargetPos", "_pilotCamTarget"];
+        if (!_pilotCamTracking) then {GVAR(activeLasers) deleteAt _x; continue;};
+
+        if (_pilotCamTarget isEqualTo objNull) then {
+            _pilotCamTargetPos;
+        } else {
+            _pilotCamTarget
+        }
+    } else {
+        // Turret
+        _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionEnd)
+    };
+
+    //private _lasDir = _posBeg vectorDiff _posEnd;
+    private _lasDir = _posEnd vectorDiff _posBeg;
 
     drawLaser [
 		_posBeg,
