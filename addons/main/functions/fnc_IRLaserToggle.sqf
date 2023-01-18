@@ -27,7 +27,11 @@ private _laserInfo = [_vehicle];
 if (_turret isEqualTo [-1]) exitWith { // Pilot
     getPilotCameraTarget _vehicle params ["_pilotCamTracking", "_pilotCamTargetPos", "_pilotCamTarget"];
     private _gunBeg = getText (configOf _vehicle >> "memoryPointDriverOptics");
-    private _gunEnd = "";
+    private _gunEnd = if (_pilotCamTarget isEqualTo objNull) then {
+        _pilotCamTargetPos
+    } else {
+        _pilotCamTarget
+    };
     _laserInfo = _laserInfo + [_gunBeg, _gunEnd];
     GVAR(activeLasers) set [_vehicleTurretID, _laserInfo];
 };

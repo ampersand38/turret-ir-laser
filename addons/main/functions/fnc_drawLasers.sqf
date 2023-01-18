@@ -20,19 +20,16 @@
 
     //private _posBeg = _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg);
     private _posBeg = (velocity _vehicle vectorMultiply diag_deltaTime) vectorAdd (_vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg));
-    private _posEnd = if (_selectionEnd == "") then {
-        // Pilot camera
-        getPilotCameraTarget _vehicle params ["_pilotCamTracking", "_pilotCamTargetPos", "_pilotCamTarget"];
-        if (!_pilotCamTracking) then {GVAR(activeLasers) deleteAt _x; continue;};
-
-        if (_pilotCamTarget isEqualTo objNull) then {
-            _pilotCamTargetPos;
-        } else {
-            _pilotCamTarget
-        }
-    } else {
-        // Turret
-        _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionEnd)
+    private _posEnd = switch (typeName _selectionEnd) do {
+        case ("STRING"): {
+            _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionEnd)
+        };
+        case ("ARRAY"): {
+            _selectionEnd
+        };
+        case ("OBJECT"): {
+            getPosASL _selectionEnd
+        };
     };
 
     //private _lasDir = _posBeg vectorDiff _posEnd;

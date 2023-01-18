@@ -61,4 +61,4 @@ if (_turret isEqualTo [-1] && {!(getPilotCameraTarget _vehicle select 0)}) exitW
     systemChat format ["%1 IR laser failed: targeting pod not tracking.", _vehicle];
 }; // Pilot
 
-[_vehicle, _turret] call FUNC(IRLaserToggle);
+[QGVAR(IRLaserToggle), [_vehicle, _turret]] call cba_fnc_globalEvent;
