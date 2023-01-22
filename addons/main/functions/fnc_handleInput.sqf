@@ -16,25 +16,35 @@
 if (visibleMap) exitWith {};
 if (!isNull curatorCamera) exitWith { // Zeus
     private _turrets = [];
+    private _vehicles = [];
     {
-        if (!alive _x) then {continue;};
+        if (!alive _x || {isPlayer _x}) then {continue;};
 
         private _vehicle = vehicle _x;
-        if (!alive _vehicle) then {continue;};
+        if (!alive _vehicle || {_vehicle in _vehicles}) then {continue;};
 
         if (_x isKindOf "CAManBase") then {
             private _unit = _x;
-            private _turret = _vehicle unitTurret _x;
-            if (_turret isEqualTo [] || {(_vehicle getCargoIndex _unit) == -1}) then {continueWith {false}}; // Cargo
-            if (_turret isEqualTo [-1] && {!(getPilotCameraTarget _vehicle select 0)}) then {continueWith {false}}; // Pilot
-            [_vehicle, _turret] call FUNC(IRLaserToggle);
+            private _turret = _vehicle unitTurret _unit;
+            if (
+                _turret in allTurrets _vehicle || // Gunner
+                {_turret isEqualTo [-1] && {(getPilotCameraTarget _vehicle select 0)}} // Pilot
+            ) then {
+                [_vehicle, _turret] call FUNC(IRLaserToggle);
+            };
         } else {
             // Vehicle
-            if ([0] in allTurrets _vehicle) then {
-                [_vehicle, [0]] call FUNC(IRLaserToggle);
+            if (crew _x isEqualTo []) then {continue;};
+            _vehicles pushBack _vehicle;
+            {
+                if !(alive (_vehicle turretUnit _x)) then {continue;};
+                [_vehicle, _x] call FUNC(IRLaserToggle);
+            } forEach allTurrets _vehicle;
+            if (getPilotCameraTarget _vehicle select 0) then {
+                [_vehicle, [-1]] call FUNC(IRLaserToggle);
             };
         };
-    } forEach curatorSelected;
+    } forEach (curatorSelected select 0);
 };
 
 private _unit = missionNamespace getVariable ["bis_fnc_moduleRemoteControl_unit", player];

@@ -18,8 +18,8 @@
 
     if (!alive _vehicle) then {GVAR(activeLasers) deleteAt _x; continue;};
 
-    //private _posBeg = _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg);
-    private _posBeg = (velocity _vehicle vectorMultiply diag_deltaTime) vectorAdd (_vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg));
+    private _posBeg = _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg);
+    //private _posBeg = (velocity _vehicle vectorMultiply diag_deltaTime) vectorAdd (_vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg));
     private _posEnd = switch (typeName _selectionEnd) do {
         case ("STRING"): {
             _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionEnd)
@@ -45,4 +45,5 @@
 		-1,
 		true
 	];
+
 } forEach GVAR(activeLasers);
