@@ -14,36 +14,26 @@
  */
 
 {
-    _y params ["_vehicle", "_selectionBeg", "_selectionEnd"];
+    _y params ["_vehicle", "_pov"];
 
-    if (!alive _vehicle) then {GVAR(activeLasers) deleteAt _x; continue;};
+    private _lasDir = _vehicle selectionVectorDirAndUp [_pov, 1e15] param [0, []];
 
-    private _posBeg = _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg);
-    //private _posBeg = (velocity _vehicle vectorMultiply diag_deltaTime) vectorAdd (_vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionBeg));
-    private _posEnd = switch (typeName _selectionEnd) do {
-        case ("STRING"): {
-            _vehicle modelToWorldVisualWorld (_vehicle selectionPosition _selectionEnd)
-        };
-        case ("ARRAY"): {
-            _selectionEnd
-        };
-        case ("OBJECT"): {
-            getPosASL _selectionEnd
-        };
-    };
+    if (
+        !alive _vehicle
+        || {_lasDir isEqualTo []}
+    ) then {GVAR(activeLasers) deleteAt _x; continue;};
 
-    //private _lasDir = _posBeg vectorDiff _posEnd;
-    private _lasDir = _posEnd vectorDiff _posBeg;
+    _lasDir = _vehicle vectorModelToWorldVisual _lasDir;
+    private _posBeg = _lasDir vectorAdd (_vehicle modelToWorldVisualWorld (_vehicle selectionPosition _pov));
 
     drawLaser [
-		_posBeg,
-		_lasDir,
-		[100, 100, 100],
-		[],
-		1,
-		1,
-		-1,
-		true
-	];
-
+        _posBeg,
+        _lasDir,
+        [100, 100, 100],
+        [],
+        1,
+        1,
+        -1,
+        true
+    ];
 } forEach GVAR(activeLasers);

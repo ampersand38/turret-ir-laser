@@ -40,17 +40,6 @@ if (_turret isEqualTo [-1]) exitWith { // Pilot
 private _turretConfig = [_vehicle, _turret] call CBA_fnc_getTurret;
 private _pov = getText (_turretConfig >> "memoryPointGunnerOptics");
 
-if (_pov == "pip0_pos") exitWith { // Darter
-    GVAR(activeLasers) set [_vehicleTurretID, [_vehicle, _pov, "pip0_dir"]];
-
-    true
-};
-
-private _gunBeg = getText (_turretConfig >> "gunBeg");
-private _gunEnd = getText (_turretConfig >> "gunEnd");
-
-if (!(_gunBeg in (_vehicle selectionNames "MEMORY"))) exitWith {false};
-
-GVAR(activeLasers) set [_vehicleTurretID, [_vehicle, _gunEnd, _gunBeg]];
+GVAR(activeLasers) set [_vehicleTurretID, [_vehicle, _pov]];
 
 true
